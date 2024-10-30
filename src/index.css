@@ -1,0 +1,110 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .btn-submit{
+    border:2px solid transparent;
+    background-color: #67ADE5;
+    font-size: 1rem;
+    padding: 0.2em 0.8em;
+    border-radius: 0.3em;
+    color: white;
+    transition: all 0.4s ease-in-out;
+
+    
+
+  }
+
+  .btn-submit:hover{
+    border:2px solid #67ADE5;
+    background-color: white;
+    color:#67ADE5
+  }
+
+  .padding-default {
+    padding-left: 5vw;
+    padding-right: 5vw;
+  }
+
+  .navBarStyle {
+    height: 12vh;
+  }
+ 
+  .topBarStyle {
+    height: 8vh;
+  }
+
+  .childrenStyle {
+    height: 80vh;
+  }
+
+  .home_btn{
+    border:2px solid #67ADE5;
+    color: #67ADE5;
+    font-size: 1.3rem;
+    padding: 0.2em 0;
+    width: 60%;
+    border-radius: 0.3em;
+    transition: all 0.4s ease-in-out;
+  }
+
+  .home_btn:hover {
+    background-color: #67ADE5;
+    color: white;
+  }
+
+  /*  RESPONSIVE LAYOUT*/
+
+    /* Small screens */
+    @media (min-width: 640px) {
+     
+    }
+  
+    /* Medium screens */
+    @media (min-width: 768px) {
+      .home_btn {
+        width: 50%;
+      }
+    }
+  
+    /* Large screens */
+    @media (min-width: 1024px) {
+    .home_btn {
+        width: 30%;
+        font-size: 1.5rem;
+      }
+    }
+  
+    /* Extra large screens */
+    @media (min-width: 1280px) {
+      
+    }
+  
+    /* 2XL screens */
+    @media (min-width: 1536px) {
+    
+    }
+    
+}
+
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
