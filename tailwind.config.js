@@ -10,7 +10,15 @@ module.exports = {
         primary:'#67ADE5',
         secondary: '#E53E3E', 
       },
+      screens:{
+      ssm:'400px'
+    }
+      
     },
+
+    
+
+    
   },
   plugins: [],
 }
