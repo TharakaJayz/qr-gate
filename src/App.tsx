@@ -5,6 +5,7 @@ import Layout from './layout/Layout'
 import Admin from './pages/admin/Admin'
 import Event from './pages/event/Event'
 import AdminCreate from './pages/admin/AdminCreate'
+import AdminEdit from './pages/admin/AdminEdit'
 
 type Props = {}
 
@@ -32,6 +33,9 @@ const App = (props: Props) => {
         </Layout>} />
         <Route path='/admin/create' element={<Layout>
           {<AdminCreate />}
+        </Layout>} />
+        <Route path='/admin/edit' element={<Layout>
+          {<AdminEdit />}
         </Layout>} />
 
       </Routes>

@@ -29,19 +29,20 @@
   }
 
   .navBarStyle {
-    height: 12vh;
-
+    height: 13vh;
   }
  
   .topBarStyle {
-    height: 8vh;
+    height: 7vh;
    
   }
 
   .childrenStyle {
+    
     min-height: 80vh;
-    margin-top: 5vh;
-    overflow-y: scroll;
+    
+  
+
   }
 
   .home_btn{
@@ -59,11 +60,59 @@
     color: white;
   }
 
+  .form_btn{
+    border: 2px solid #67ADE5;
+      color: #67ADE5;
+      font-size: 1.15rem;
+      padding: 0.2em 0;
+      width: 35%;
+      max-width: 120px;
+      border-radius: 0.3em;
+      transition: all 0.4s ease-in-out;
+  }
+     .form_btn:hover {
+       background-color: #67ADE5;
+       color: white;
+     }
+
+
+
+         .cardBtn_submit {
+           border: 2px solid #67ADE5;
+           color: #67ADE5;
+           font-size: 1rem;
+           padding: 0.1em 0;
+           width: 30%;
+           border-radius: 0.1em;
+           transition: all 0.4s ease-in-out;
+         }
+    
+         .cardBtn_submit:hover {
+           background-color: #67ADE5;
+           color: white;
+         }
+         .cardBtn_reset {
+           border: 2px solid #6a6a6a;
+           color: #6a6a6a;
+           font-size: 1rem;
+           padding: 0.1em 0;
+           width: 30%;
+           border-radius: 0.1em;
+           transition: all 0.4s ease-in-out;
+         }
+    
+         .cardBtn_reset:hover {
+           background-color: #6a6a6a;
+           color: white;
+         }
+
   /*  RESPONSIVE LAYOUT*/
 
     /* Small screens */
     @media (min-width: 640px) {
-     
+     .cardBtn_submit , .cardBtn_reset {
+      max-width: 100px;
+     }
     }
   
     /* Medium screens */

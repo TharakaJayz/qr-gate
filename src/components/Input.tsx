@@ -14,12 +14,15 @@ interface InputProps {
 }
 
 const Input: React.FC<InputProps> = ({ label, id, type, register, required, errors, disabled }) => {
+    if(errors[id]){
+        console.log(`this is input error: ${id}`,errors[id]);
+    }
     return (
     
-    <div>
+        <div className=" ">
 
         <label htmlFor={id}
-            className="block text-sm font-semibold leading-6 text-gray-900"
+            className="block text-sm font-semibold leading-6 text-gray-900 "
         >
             {label}
         </label>

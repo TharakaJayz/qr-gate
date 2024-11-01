@@ -9,8 +9,11 @@ type Props = {
 const Layout = ({ children }: Props) => {
   return (
     <div className='w-full h-full flex flex-col  justify-start'>
+
+    
       <NavBar pStyle='navBarStyle' />
       <TopBar pStyle='topBarStyle' />
+     
       <div className=' w-full childrenStyle '>
         {children}
       </div>
