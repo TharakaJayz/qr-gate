@@ -2,7 +2,7 @@ import React from 'react'
 
 type Props = {
     name: string,
-    onBtnClick: (btnText: string,id:string) => void,
+    onBtnClick: (btnText: "edit" |"delete" ,id:string) => void,
     email: string,
     id: string,
     pStyle?: string  //  for getting styles from parent

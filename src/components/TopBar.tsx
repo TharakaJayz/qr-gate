@@ -13,7 +13,7 @@ const TopBar = ({ pStyle }: Props) => {
 
 
     return (
-        <div className={` ${pStyle}  w-full  flex justify-end items-center gap-5 padding-default border-b-2 border-b-gray-300 sm:text-xl`}>
+        <div className={` ${pStyle}  w-full  flex justify-end items-center gap-5 padding-default border-b-2 border-b-gray-300 sm:text-xl sm:hidden`}>
 
             <span className={clsx(`cursor-pointer`, selectedTitle === "admin" && "font-semibold")} onClick={() => { console.log("clicked admin"); setSelectedTitle("admin"); navigation("/admin") }}>Admin</span>
             <span className={clsx(`cursor-pointer`, selectedTitle === "event" && "font-semibold")} onClick={() => { console.log("clicked event"); setSelectedTitle("event"); navigation("/event") }}>Event</span>

@@ -1,11 +1,20 @@
 import React from 'react'
 import AdminCard from '../../components/AdminCard'
+import { useNavigate } from 'react-router-dom'
 
 type Props = {}
 
 const AdminEdit = (props: Props) => {
-    const handleCardClick = (btnText:string,id:string) =>{
+    const navigation = useNavigate();
+    const handleCardClick = (btnText: "edit" | "delete",id:string) =>{
+        if(btnText === 'edit'){
+            navigation(`${id}`)
+        }
+        if(btnText === 'delete'){
 
+        }
+        console.log("btn txt",btnText);
+        console.log("id",id);
     }
   return (
       <div className='padding-default flex flex-col items-center justify-start gap-1 h-full pt-3 sm:py-3   '>
