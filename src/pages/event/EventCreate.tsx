@@ -1,9 +1,9 @@
 import React from 'react'
 import EventForm from '../../forms/EventForm'
 
-type Props = {}
 
-const EventCreate = ({ }: Props) => {
+
+const EventCreate = () => {
     return (
         <div className='h-full'>
             <div className='padding-default flex flex-col items-center justify-start gap-1 h-full py-3   '>

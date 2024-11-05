@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form';
 import Input from '../components/Input';
 import clsx from 'clsx';
