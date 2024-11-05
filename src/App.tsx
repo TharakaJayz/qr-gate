@@ -7,6 +7,7 @@ import Event from './pages/event/Event'
 import AdminCreate from './pages/admin/AdminCreate'
 import AdminEdit from './pages/admin/AdminEdit'
 import AdminEditUser from './pages/admin/AdminEditUser'
+import EventCreate from './pages/event/EventCreate'
 
 type Props = {}
 
@@ -25,6 +26,9 @@ const App = (props: Props) => {
 
         <Route path='/event' element={<Layout>
           {<Event />}
+        </Layout>} />
+        <Route path='/event/create' element={<Layout>
+          {<EventCreate />}
         </Layout>} />
 
         {/* EVENT ROUTES */}

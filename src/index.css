@@ -26,17 +26,21 @@
   .padding-default {
     padding-left: 5vw;
     padding-right: 5vw;
+  
   }
 
   .navBarStyle {
     /* height: 13vh; */
     flex: 2;
+    width:100%;
+    
     
   }
  
   .topBarStyle {
     /* height: 7vh; */
     flex:1;
+    
    
   }
 

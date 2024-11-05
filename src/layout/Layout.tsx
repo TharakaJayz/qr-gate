@@ -18,7 +18,7 @@ const Layout = ({ children }: Props) => {
       <TopBar pStyle='topBarStyle' />
       </div>
      
-      <div className=' w-full childrenStyle mt-[15vh]'>
+      <div className=' w-full childrenStyle mt-[15vh] '>
         {children}
       </div>
     </div>
