@@ -1,12 +1,10 @@
-import React, {  useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form';
 import Input from '../components/Input';
 import clsx from 'clsx';
 import ZoneCard from '../components/ZoneCard';
 
-type Props = {
-    pStyle?: string;  // style from parent  
-}
+
 
 export interface EventCreateInterface {
     title: string;
@@ -17,13 +15,19 @@ export interface EventCreateInterface {
     limit?: number
 }
 
+type Props = {
+    pStyle?: string;  // style from parent  
+    event?: EventCreateInterface;
+    eventZones?: ZoneDetail[]
+}
+
 type ZoneDetail = {
     type: string,
     limit: number
 }
 
-const EventForm = ({ pStyle }: Props) => {
-    const { register, handleSubmit, formState: { errors } } = useForm<FieldValues>(
+const EventForm = ({ pStyle,event,eventZones }: Props) => {
+    const { register,reset, handleSubmit, formState: { errors } } = useForm<FieldValues>(
         {
             defaultValues: {
                 title: "",
@@ -34,13 +38,18 @@ const EventForm = ({ pStyle }: Props) => {
         }
     );
 
+    useEffect(() => {
+        reset(event);
+    },
+        [event, reset,eventZones])
+
     const [zoneState, setZoneState] = useState({
         type: "",
         limit: 0
     })
 
     // let zoneDetails:ZoneDetail[] =[{limit:67,type:"VIP"}, {limit:500,type:"FC"}]
-    const [zoneDetails, setZoneDetails] = useState<ZoneDetail[]>([])
+    const [zoneDetails, setZoneDetails] = useState<ZoneDetail[]>( eventZones ? eventZones:[])
     const addBtnHandler = () => {
         console.log("addBtnHandler clicked");
         console.log("zone status to push", zoneState);
@@ -57,7 +66,7 @@ const EventForm = ({ pStyle }: Props) => {
         setZoneDetails(zoneDetails.filter((zone) => zone.type !== type))
     })
     return (
-        <form className={`w-full h-auto border-2  ${pStyle} flex flex-col justify-start items-start px-5 py-5 gap-5 `} onSubmit={onSubmit}>
+        <form className={`w-full h-auto   ${pStyle} flex flex-col justify-start items-start px-5 py-5 gap-5 `} onSubmit={onSubmit}>
             <section className='w-full  sm:grid sm:grid-cols-2 sm:grid-rows-2 flex flex-col gap-2'>
                 <Input label="Title" register={register} id="title" errors={errors} disabled={false} required={true} />
                 <Input label="Date" register={register} id="date" errors={errors} disabled={false} required={true} />
@@ -65,11 +74,11 @@ const EventForm = ({ pStyle }: Props) => {
                 <Input label="PlannerId" register={register} id="plannerId" errors={errors} disabled={false} required={true} />
             </section>
             <section className='w-full flex flex-col gap-2  md:flex-row md:justify-between'>
-                <div className='flex flex-col gap-2  md:w-[50%]'>
+                <div className='flex flex-col gap-2  md:w-[50%] '>
                     <label className='text-sm font-semibold leading-6 text-gray-900 '>Zone</label>
-                    <div className='flex flex-col w-full  gap-2  '>
+                    <div className='flex flex-col w-full  gap-2 '>
                         <div className='flex flex-col w-full  gap-2'>
-                            <div className='flex w-full justify-end items-center gap-2'>
+                            <div className='flex w-full justify-end items-center gap-2 '>
                                 <label className='text-sm font-semibold leading-6 text-gray-900 '>Type</label>
                                 <input type="text" onChange={(e) => { setZoneState({ ...zoneState, type: e.target.value }) }} className={clsx(`
                         form-input 
