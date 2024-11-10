@@ -1,9 +1,9 @@
-import React, {  useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form';
 import Input from '../components/Input';
 import clsx from 'clsx';
 import ZoneCard from '../components/ZoneCard';
-
+import { createEvent } from '../service/eventService';
 
 
 export interface EventCreateInterface {
@@ -18,7 +18,8 @@ export interface EventCreateInterface {
 type Props = {
     pStyle?: string;  // style from parent  
     event?: EventCreateInterface;
-    eventZones?: ZoneDetail[]
+    eventZones?: ZoneDetail[];
+    onSumission?:(data:EventCreateInterface & ZoneDetail[]) => void;
 }
 
 type ZoneDetail = {
@@ -26,22 +27,27 @@ type ZoneDetail = {
     limit: number
 }
 
-const EventForm = ({ pStyle,event,eventZones }: Props) => {
-    const { register,reset, handleSubmit, formState: { errors } } = useForm<FieldValues>(
+
+const EventForm = ({ pStyle, event, eventZones }: Props) => {
+    const { register, reset, handleSubmit, formState: { errors } } = useForm<FieldValues>(
         {
             defaultValues: {
-                title: "",
-                date: "",
-                location: "",
-                plannerId: ""
+                title: event?.title || "",
+                date: event?.date || "",
+                location: event?.location || "",
+                plannerId: event?.plannerId || "",
             }
         }
     );
 
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
     useEffect(() => {
         reset(event);
+        if (eventZones) {
+            setZoneDetails(eventZones);
+        }
     },
-        [event, reset,eventZones])
+        [event, reset, eventZones])
 
     const [zoneState, setZoneState] = useState({
         type: "",
@@ -49,7 +55,7 @@ const EventForm = ({ pStyle,event,eventZones }: Props) => {
     })
 
     // let zoneDetails:ZoneDetail[] =[{limit:67,type:"VIP"}, {limit:500,type:"FC"}]
-    const [zoneDetails, setZoneDetails] = useState<ZoneDetail[]>( eventZones ? eventZones:[])
+    const [zoneDetails, setZoneDetails] = useState<ZoneDetail[]>(eventZones ? eventZones : [])
     const addBtnHandler = () => {
         console.log("addBtnHandler clicked");
         console.log("zone status to push", zoneState);
@@ -58,8 +64,30 @@ const EventForm = ({ pStyle,event,eventZones }: Props) => {
     }
 
 
-    const onSubmit = handleSubmit((data) => {
-        console.log("event create form data", data);
+    if (!event?.plannerId) {
+        setErrorMessage("planner id is required.");
+        return;
+    }
+    const onSubmit = handleSubmit(async (data) => {
+        const eventData = {
+            title: data.title,
+            date: data.date,
+            location: data.location,
+            plannerId: event?.plannerId,
+            zones: zoneDetails,
+        };
+        try {
+            setErrorMessage(null);
+            const response = await createEvent(eventData);
+            console.log("Event create successfully: ", response.data);
+            alert("Event create successfully!");
+            reset();
+            setZoneDetails([]);
+        } catch (error: any) {
+            const message = error.response?.data?.message || "Error creating event. please try again";
+            setErrorMessage(message);
+            console.error("Error creating Event: ", error);
+        }
     })
 
     const zoneCardHandler = ((type: string) => {
@@ -71,7 +99,7 @@ const EventForm = ({ pStyle,event,eventZones }: Props) => {
                 <Input label="Title" register={register} id="title" errors={errors} disabled={false} required={true} />
                 <Input label="Date" register={register} id="date" errors={errors} disabled={false} required={true} />
                 <Input label="Location" register={register} id="location" errors={errors} disabled={false} required={true} />
-                <Input label="PlannerId" register={register} id="plannerId" errors={errors} disabled={false} required={true} />
+                <Input label="PlannerId" register={register} id="plannerId" errors={errors} disabled={true} required={true} />
             </section>
             <section className='w-full flex flex-col gap-2  md:flex-row md:justify-between'>
                 <div className='flex flex-col gap-2  md:w-[50%] '>
