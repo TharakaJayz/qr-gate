@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form';
 import Input from '../components/Input';
 import clsx from 'clsx';
@@ -18,7 +18,8 @@ export interface EventCreateInterface {
 type Props = {
     pStyle?: string;  // style from parent  
     event?: EventCreateInterface;
-    eventZones?: ZoneDetail[]
+    eventZones?: ZoneDetail[];
+    onSave?:(data:Zone)  => void;
 }
 
 type ZoneDetail = {
@@ -26,8 +27,12 @@ type ZoneDetail = {
     limit: number
 }
 
-const EventForm = ({ pStyle,event,eventZones }: Props) => {
-    const { register,reset, handleSubmit, formState: { errors } } = useForm<FieldValues>(
+export interface Zone extends EventCreateInterface {
+    zones:ZoneDetail[]
+}
+
+const EventForm = ({ pStyle, event, eventZones ,onSave}: Props) => {
+    const { register, reset, handleSubmit, formState: { errors } } = useForm<FieldValues>(
         {
             defaultValues: {
                 title: "",
@@ -41,7 +46,7 @@ const EventForm = ({ pStyle,event,eventZones }: Props) => {
     useEffect(() => {
         reset(event);
     },
-        [event, reset,eventZones])
+        [event, reset, eventZones])
 
     const [zoneState, setZoneState] = useState({
         type: "",
@@ -49,7 +54,7 @@ const EventForm = ({ pStyle,event,eventZones }: Props) => {
     })
 
     // let zoneDetails:ZoneDetail[] =[{limit:67,type:"VIP"}, {limit:500,type:"FC"}]
-    const [zoneDetails, setZoneDetails] = useState<ZoneDetail[]>( eventZones ? eventZones:[])
+    const [zoneDetails, setZoneDetails] = useState<ZoneDetail[]>(eventZones ? eventZones : [])
     const addBtnHandler = () => {
         console.log("addBtnHandler clicked");
         console.log("zone status to push", zoneState);
@@ -59,7 +64,20 @@ const EventForm = ({ pStyle,event,eventZones }: Props) => {
 
 
     const onSubmit = handleSubmit((data) => {
-        console.log("event create form data", data);
+        console.log("event create form data 1", data)
+        console.log("event create form data 1", zoneDetails)
+        const dataToSubmit:Zone = {
+            title: data.title,
+            date:data.date,
+            location:data.location,
+            plannerId: data.plannerId,
+            zones:zoneDetails
+           
+        }
+
+        console.log("data to submit",dataToSubmit);
+
+        
     })
 
     const zoneCardHandler = ((type: string) => {

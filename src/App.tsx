@@ -10,6 +10,7 @@ import AdminEditUser from './pages/admin/AdminEditUser'
 import EventCreate from './pages/event/EventCreate'
 import EventEdit from './pages/event/EventEdit'
 import EventEditSingleEvent from './pages/event/EventEditSingleEvent'
+import EventPlannerCreate from './pages/event/EventPlannerCreate'
 
 type Props = {}
 
@@ -29,6 +30,9 @@ const App = (props: Props) => {
         <Route path='/event' element={<Layout>
           {<Event />}
         </Layout>} />
+        <Route  path='/event/eventPlanner' element={<Layout>
+          {<EventPlannerCreate/>}
+        </Layout>}/>
         <Route path='/event/create' element={<Layout>
           {<EventCreate />}
         </Layout>} />

@@ -1,7 +1,8 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-
+import * as apiClient from "../../api-client";
+import { useMutation } from 'react-query';
 type Props = {}
 
 export type LoginFormData = {
@@ -12,15 +13,29 @@ export type LoginFormData = {
 
 const Login = (props: Props) => {
     const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>();
+
     const navigation = useNavigate();
+    // acces backend
+
+    const mutation = useMutation(apiClient.login, {
+        onSuccess: () => {
+            console.log("login succes full");
+            navigation("/home")
+        },
+        onError: (error: Error)=> {
+            console.log("login error",error);
+        }
+    })
     const onSubmit = handleSubmit((data) => {
         console.log("submittted data", data);
         if (data) {
-            navigation("/home")
+            mutation.mutate(data);
+            
         }
         // neeed to access API
     })
     return (
+
         <div className='bg-primary w-full h-full flex justify-center items-center'>
 
 
