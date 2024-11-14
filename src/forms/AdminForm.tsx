@@ -56,8 +56,8 @@ const AdminForm = ({ pStyle, admin, onFormSave,editMode,isLoading }: Props) => {
   });
 
   return (
-    <form className={`padding-default flex flex-col items-center justify-center w-full gap-2  ${pStyle}`} onSubmit={onSubmit}>
-      <div className='grid grid-rows-6 grid-cols-1 sm:grid-rows-3 sm:grid-cols-2   gap-2  sm:gap-y-2   w-[80%] h-[90%] sm:w-full sm:max-w-[600px] sm:items-center ' >
+    <form className={`padding-default flex flex-col items-center justify-center w-full gap-2   ${pStyle}`} onSubmit={onSubmit}>
+      <div className='grid grid-rows-6 grid-cols-1 sm:grid-rows-3 sm:grid-cols-2   gap-2  sm:gap-y-2  w-[80%] h-[90%] sm:w-full sm:max-w-[600px] sm:items-center md:gap-0 ' >
         <Input label="First Name" register={register} id="firstName" errors={errors} disabled={isLoading} required={true} />
         <Input label="Last Name" register={register} id="lastName" errors={errors} disabled={isLoading} required={true} />
         <Input label="Email" register={register} id="email" errors={errors} disabled={isLoading} required={true} />
