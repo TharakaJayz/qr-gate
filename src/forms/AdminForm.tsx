@@ -86,7 +86,7 @@ const AdminForm = ({ pStyle, admin, onFormSave,editMode,isLoading }: Props) => {
       </div>
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}
       <div className='w-[80%] h-[10%] sm:w-full sm:max-w-[600px] flex items-center justify-end gap-3 '>
-        <button className='form_btn' onClick={() => reset(admin)} disabled={isLoading}>Cancel</button>
+        <button className='form_btn' type='reset' onClick={() => reset(admin)} disabled={isLoading}>Cancel</button>
         <button className='form_btn' type='submit' disabled={isLoading}>{isLoading ? 'Saving...' : 'Save'}</button>
       </div>
     </form>

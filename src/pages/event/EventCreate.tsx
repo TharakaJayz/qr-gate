@@ -1,16 +1,27 @@
 import React from 'react'
 import EventForm, { Event } from '../../forms/EventForm'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import * as apiClient from "../../api-client";
 import { useMutation } from 'react-query';
+import Swal from 'sweetalert2';
 const EventCreate = () => {
     const location = useLocation();
     const { id } = location.state || "";
     console.log("plannerid",id);
+    const navigation = useNavigate();
     const mutation  = useMutation(apiClient.createEvent,{
         onSuccess:(response)=>{
             console.log("event creation successful");
             console.log("event create response",response);
+            Swal.fire({
+                title: "Done!",
+                text: "event created successfully!",
+                icon: "success",
+                confirmButtonText: "Ok"
+            }).then(() => {
+                navigation("/event/edit");
+
+            })
         },
         onError:(error:Error) =>{
             console.log("event creation error",error);

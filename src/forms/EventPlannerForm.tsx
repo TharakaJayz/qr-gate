@@ -5,6 +5,7 @@ import { createEventPlanner } from "../service/eventPlannerService";
 import { useNavigate } from "react-router-dom";
 import * as apiClient from "../api-client";
 import { useMutation } from "react-query";
+import Swal from "sweetalert2";
 
 export interface EventPlannerInterface {
     name: string,
@@ -43,9 +44,18 @@ const EventPlannerForm = ({ pStyle, eventPlanner }: Props) => {
             console.log("Response from event planner creation",response);
             setErrorMessage(null);
             console.log("event planner creation success full");
-            alert("Event Planner create successfully!");
-            navigate("/event/createEvent", { state: { id: response.event_planner.id } });
-            reset();
+            // alert("Event Planner create successfully!");
+            Swal.fire({
+                title: "Done!",
+                text: "eventPlanner created successfully!",
+                icon: "success",
+                confirmButtonText: "Ok"
+            }).then(() => {
+                navigate("/event/createEvent", { state: { id: response.event_planner.id } });
+                reset();
+
+            })
+            
             // navigation("/admin");
         },
         onError: (error: Error) => {
