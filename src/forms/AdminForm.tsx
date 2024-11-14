@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import Input from '../components/Input';
-import { createAdmin } from '../service/adminService';
 
 export interface AdminInterface {
   firstName?: string,
@@ -24,7 +23,7 @@ type Props = {
 
 const AdminForm = ({ pStyle, admin, onFormSave,editMode,isLoading }: Props) => {
 
-  const { register, reset, handleSubmit, formState: { errors, isSubmitting } } = useForm<FieldValues>({
+  const { register, reset, handleSubmit, formState: { errors } } = useForm<FieldValues>({
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -35,8 +34,6 @@ const AdminForm = ({ pStyle, admin, onFormSave,editMode,isLoading }: Props) => {
       role: "admin"
     }
   });
-
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     reset(admin)
@@ -54,22 +51,8 @@ const AdminForm = ({ pStyle, admin, onFormSave,editMode,isLoading }: Props) => {
       role: "admin"
     }
 
-    console.log("admin create data to sumit", dataToSubmit);
-    
     onFormSave(dataToSubmit);
 
-
-    // try {
-    //   setErrorMessage(null);
-    //   const response = await createAdmin(data as AdminInterface);
-    //   console.log("Admin data saved successfully: ", response.data);
-    //   alert("Admin create successfully!");
-    //   reset();
-    // } catch (error: any) {
-    //   const message = error.response?.data?.message || "Error saving admin data. Please try again.";
-    //   setErrorMessage(message);
-    //   console.error("Error saving admin: ", error);
-    // }
   });
 
   return (
@@ -78,13 +61,16 @@ const AdminForm = ({ pStyle, admin, onFormSave,editMode,isLoading }: Props) => {
         <Input label="First Name" register={register} id="firstName" errors={errors} disabled={isLoading} required={true} />
         <Input label="Last Name" register={register} id="lastName" errors={errors} disabled={isLoading} required={true} />
         <Input label="Email" register={register} id="email" errors={errors} disabled={isLoading} required={true} />
-        <Input label="Address" register={register} id="address" errors={errors} disabled={isLoading} required={true} />
+        {((admin && admin.address) || !admin ) &&(  
+          <Input label="Address" register={register} id="address" errors={errors} disabled={isLoading} required={true} />
+        )}
+        
         {!editMode && (<Input type='password' label="Password" register={register} id="password" errors={errors} disabled={isLoading} required={true} />)}
         {!editMode && (<Input label="Confirm Password" register={register} id="passwordConfirm" errors={errors} type='password' disabled={isLoading} required={true} />)}
        
        
       </div>
-      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+
       <div className='w-[80%] h-[10%] sm:w-full sm:max-w-[600px] flex items-center justify-end gap-3 '>
         <button className='form_btn' type='reset' onClick={() => reset(admin)} disabled={isLoading}>Cancel</button>
         <button className='form_btn' type='submit' disabled={isLoading}>{isLoading ? 'Saving...' : 'Save'}</button>

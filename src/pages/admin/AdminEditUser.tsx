@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom'
 import AdminForm, { AdminInterface } from '../../forms/AdminForm';
 import * as apiClient from "../../api-client";
 import { useQuery } from 'react-query';
-import Layout from '../../layout/Layout';
 
 type Props = {}
 
