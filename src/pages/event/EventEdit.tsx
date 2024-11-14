@@ -1,11 +1,26 @@
 
 import { useNavigate } from 'react-router-dom'
 import EventCard from '../../components/EventCard'
-
+import { useQuery } from 'react-query'
+import * as apiClient from "../../api-client";
+import { Event } from '../../forms/EventForm';
 type Props = {}
 
 const EventEdit = (props: Props) => {
+    const {data:events }:any  = useQuery("fetchEvents",apiClient.fetchEvents,{
+        onError:(error:any)=>{
+            console.log("error fetching events",error.message);
+        }
+    })
     const navigation = useNavigate();
+
+    if(!events){
+        return (<div>No events</div>)
+    }
+
+
+   
+    console.log("events from backend ==>>", events);
     const handleCardClick = (btnText: "edit" | "delete", id: string) => {
         if (btnText === 'edit') {
             navigation(`${id}`)
@@ -29,7 +44,18 @@ const EventEdit = (props: Props) => {
                 </section>
 
                 <section className='w-full max-h-[90%]  overflow-y-scroll  flex flex-col gap-2 sm:pt-0 border-2 '>
-                    <EventCard onBtnClick={handleCardClick} date="2024-05-20"
+                    {events.result.map((event: Event) => (
+
+                        <EventCard onBtnClick={handleCardClick} date= {event.date.split("T")[0]}
+                            location={event.location}
+                            title= {event.title}
+
+                            id={event.id || ""}
+                            pStyle='px-[20px]'
+                        />
+                    )) }
+                    
+                    {/* <EventCard onBtnClick={handleCardClick} date="date"
                         location='location'
                         title='title'
 
@@ -42,14 +68,7 @@ const EventEdit = (props: Props) => {
 
                         id='id1'
                         pStyle='px-10'
-                    />
-                    <EventCard onBtnClick={handleCardClick} date="date"
-                        location='location'
-                        title='title'
-
-                        id='id1'
-                        pStyle='px-10'
-                    />
+                    /> */}
 
                 </section>
             </div>

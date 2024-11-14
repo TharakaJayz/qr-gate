@@ -17,10 +17,12 @@ export interface AdminInterface {
 type Props = {
   pStyle?: string
   admin?: AdminInterface,
-  onFormSave:(data:AdminInterface) => void
+  editMode?:boolean,
+  onFormSave:(data:AdminInterface) => void;
+  isLoading?:boolean
 }
 
-const AdminForm = ({ pStyle, admin, onFormSave }: Props) => {
+const AdminForm = ({ pStyle, admin, onFormSave,editMode,isLoading }: Props) => {
 
   const { register, reset, handleSubmit, formState: { errors, isSubmitting } } = useForm<FieldValues>({
     defaultValues: {
@@ -73,17 +75,19 @@ const AdminForm = ({ pStyle, admin, onFormSave }: Props) => {
   return (
     <form className={`padding-default flex flex-col items-center justify-center w-full gap-2  ${pStyle}`} onSubmit={onSubmit}>
       <div className='grid grid-rows-6 grid-cols-1 sm:grid-rows-3 sm:grid-cols-2   gap-2  sm:gap-y-2   w-[80%] h-[90%] sm:w-full sm:max-w-[600px] sm:items-center ' >
-        <Input label="First Name" register={register} id="firstName" errors={errors} disabled={isSubmitting} required={true} />
-        <Input label="Last Name" register={register} id="lastName" errors={errors} disabled={isSubmitting} required={true} />
-        <Input label="Email" register={register} id="email" errors={errors} disabled={isSubmitting} required={true} />
-        <Input label="Address" register={register} id="address" errors={errors} disabled={isSubmitting} required={true} />
-        <Input type='password' label="Password" register={register} id="password" errors={errors} disabled={isSubmitting} required={true} />
-        <Input label="Confirm Password" register={register} id="passwordConfirm" errors={errors} type='password' disabled={isSubmitting} required={true} />
+        <Input label="First Name" register={register} id="firstName" errors={errors} disabled={isLoading} required={true} />
+        <Input label="Last Name" register={register} id="lastName" errors={errors} disabled={isLoading} required={true} />
+        <Input label="Email" register={register} id="email" errors={errors} disabled={isLoading} required={true} />
+        <Input label="Address" register={register} id="address" errors={errors} disabled={isLoading} required={true} />
+        {!editMode && (<Input type='password' label="Password" register={register} id="password" errors={errors} disabled={isLoading} required={true} />)}
+        {!editMode && (<Input label="Confirm Password" register={register} id="passwordConfirm" errors={errors} type='password' disabled={isLoading} required={true} />)}
+       
+       
       </div>
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}
       <div className='w-[80%] h-[10%] sm:w-full sm:max-w-[600px] flex items-center justify-end gap-3 '>
-        <button className='form_btn' onClick={() => reset(admin)} disabled={isSubmitting}>Cancel</button>
-        <button className='form_btn' type='submit' disabled={isSubmitting}>{isSubmitting ? 'saving...' : 'save'}</button>
+        <button className='form_btn' onClick={() => reset(admin)} disabled={isLoading}>Cancel</button>
+        <button className='form_btn' type='submit' disabled={isLoading}>{isLoading ? 'Saving...' : 'Save'}</button>
       </div>
     </form>
   )

@@ -33,7 +33,7 @@ const App = (props: Props) => {
         <Route  path='/event/eventPlanner' element={<Layout>
           {<EventPlannerCreate/>}
         </Layout>}/>
-        <Route path='/event/create' element={<Layout>
+        <Route path='/event/createEvent' element={<Layout>
           {<EventCreate />}
         </Layout>} />
         <Route path='/event/edit' element={<Layout>

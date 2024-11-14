@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import * as apiClient from "../../api-client";
 import { useMutation } from 'react-query';
+import Toast from '../../components/Toast';
 type Props = {}
 
 export type LoginFormData = {
@@ -13,21 +14,26 @@ export type LoginFormData = {
 
 const Login = (props: Props) => {
     const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>();
+    const [error,setError] = useState<string>("")
 
     const navigation = useNavigate();
     // acces backend
 
     const mutation = useMutation(apiClient.login, {
-        onSuccess: () => {
-            console.log("login succes full");
+        onSuccess: (data) => {
+            setError("")
+            
             navigation("/home")
         },
         onError: (error: Error)=> {
             console.log("login error",error);
+            setError(error.message)
+            
+            // alert(error)
         }
     })
     const onSubmit = handleSubmit((data) => {
-        console.log("submittted data", data);
+        // console.log("submittted data", data);
         if (data) {
             mutation.mutate(data);
             
@@ -64,6 +70,13 @@ const Login = (props: Props) => {
                     </div>
                 </form>
             </div>
+            {error.length !==0 && (
+                <Toast
+                    message={error}
+                    type={"ERROR"}
+                    onClose={()=>{setError("");}}
+                />
+            )}
 
         </div>
     )

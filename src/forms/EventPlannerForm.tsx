@@ -3,6 +3,8 @@ import { FieldValues, useForm } from "react-hook-form";
 import Input from "../components/Input";
 import { createEventPlanner } from "../service/eventPlannerService";
 import { useNavigate } from "react-router-dom";
+import * as apiClient from "../api-client";
+import { useMutation } from "react-query";
 
 export interface EventPlannerInterface {
     name: string,
@@ -15,6 +17,8 @@ type Props = {
     pStyle?: string
     eventPlanner?: EventPlannerInterface
 }
+
+
 
 const EventPlannerForm = ({ pStyle, eventPlanner }: Props) => {
     const { register, reset, handleSubmit, formState: { errors, isSubmitting } } = useForm<FieldValues>({
@@ -33,20 +37,31 @@ const EventPlannerForm = ({ pStyle, eventPlanner }: Props) => {
         reset(eventPlanner)
     }, [eventPlanner, reset]);
 
-    const onSubmit = handleSubmit(async (data) => {
-        try {
+    const mutation = useMutation(apiClient.createEventPlanner, {
+        onSuccess: (response) => {
+            // need to modifyyyyyyyyyyyyyyyy
+            console.log("Response from event planner creation",response);
             setErrorMessage(null);
-            const response = await createEventPlanner(data as EventPlannerInterface);
-            const plannerId = response.data.id;
-            console.log("Event Planner saved successfully: ", response.data);
+            console.log("event planner creation success full");
             alert("Event Planner create successfully!");
-            navigate("/event/create", { state: { plannerId } });
+            navigate("/event/createEvent", { state: { id: response.event_planner.id } });
             reset();
-        } catch (error: any) {
-            const message = error.response?.data?.message || "Error savig event planner data. Please try again.";
-            setErrorMessage(message);
-            console.error("Error saving event planner: ", error);
+            // navigation("/admin");
+        },
+        onError: (error: Error) => {
+            console.log("event planner creation error", error);
+            navigate("/event/createEvent", { state: { id: "" } });
         }
+         
+    })
+
+    const onSubmit = handleSubmit((data) => {
+
+        
+        mutation.mutate({ name: data.name, email: data.email, password: data.password, passwordConfirm: data.passwordConfirm })
+        // const plannerId = response.data.id;
+
+
     });
 
     return (
@@ -59,8 +74,8 @@ const EventPlannerForm = ({ pStyle, eventPlanner }: Props) => {
             </div>
             {errorMessage && <p className="text-red-500">{errorMessage}</p>}
             <div className='w-[80%] h-[10%] sm:w-full sm:max-w-[600px] flex items-center justify-end gap-3 '>
-                <button className='form_btn' onClick={() => reset(eventPlanner)} disabled={isSubmitting}>Cancel</button>
-                <button className='form_btn' type='submit' disabled={isSubmitting}>{isSubmitting ? 'saving...' : 'save'}</button>
+                <button className='form_btn capitalize' onClick={() => reset(eventPlanner)} disabled={isSubmitting}>Cancel</button>
+                <button className='form_btn capitalize' type='submit' disabled={isSubmitting}>{mutation.isLoading ? 'saving...' : 'save'}</button>
             </div>
         </form>
     )

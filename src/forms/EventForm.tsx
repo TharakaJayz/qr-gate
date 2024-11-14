@@ -19,7 +19,8 @@ type Props = {
     pStyle?: string;  // style from parent  
     event?: EventCreateInterface;
     eventZones?: ZoneDetail[];
-    onSave?:(data:Zone)  => void;
+    onSave: (data: Event)  => void;
+    plannerId?:string;
 }
 
 type ZoneDetail = {
@@ -27,12 +28,13 @@ type ZoneDetail = {
     limit: number
 }
 
-export interface Zone extends EventCreateInterface {
+export interface Event extends EventCreateInterface {
     zones:ZoneDetail[]
+    id?:string
 }
 
-const EventForm = ({ pStyle, event, eventZones ,onSave}: Props) => {
-    const { register, reset, handleSubmit, formState: { errors } } = useForm<FieldValues>(
+const EventForm = ({ pStyle, event, eventZones ,onSave,plannerId}: Props) => {
+    const { register, reset,setValue, handleSubmit, formState: { errors } } = useForm<FieldValues>(
         {
             defaultValues: {
                 title: "",
@@ -45,8 +47,12 @@ const EventForm = ({ pStyle, event, eventZones ,onSave}: Props) => {
 
     useEffect(() => {
         reset(event);
+        console.log("planner id",plannerId);
+        if(plannerId){
+            setValue("plannerId",plannerId)
+        }
     },
-        [event, reset, eventZones])
+        [event, reset, eventZones,plannerId,setValue])
 
     const [zoneState, setZoneState] = useState({
         type: "",
@@ -59,6 +65,7 @@ const EventForm = ({ pStyle, event, eventZones ,onSave}: Props) => {
         console.log("addBtnHandler clicked");
         console.log("zone status to push", zoneState);
         setZoneDetails([...zoneDetails, zoneState])
+        setZoneState({ limit: 0, type: "" })
         console.log("zoneDetails after change", zoneDetails);
     }
 
@@ -66,7 +73,7 @@ const EventForm = ({ pStyle, event, eventZones ,onSave}: Props) => {
     const onSubmit = handleSubmit((data) => {
         console.log("event create form data 1", data)
         console.log("event create form data 1", zoneDetails)
-        const dataToSubmit:Zone = {
+        const dataToSubmit:Event = {
             title: data.title,
             date:data.date,
             location:data.location,
@@ -74,6 +81,8 @@ const EventForm = ({ pStyle, event, eventZones ,onSave}: Props) => {
             zones:zoneDetails
            
         }
+
+        onSave(dataToSubmit)
 
         console.log("data to submit",dataToSubmit);
 
@@ -98,7 +107,7 @@ const EventForm = ({ pStyle, event, eventZones ,onSave}: Props) => {
                         <div className='flex flex-col w-full  gap-2'>
                             <div className='flex w-full justify-end items-center gap-2 '>
                                 <label className='text-sm font-semibold leading-6 text-gray-900 '>Type</label>
-                                <input type="text" onChange={(e) => { setZoneState({ ...zoneState, type: e.target.value }) }} className={clsx(`
+                                <input type="text" onChange={(e) => { setZoneState({ ...zoneState, type: e.target.value }) }} value={zoneState.type}  className={clsx(`
                         form-input 
                     block  
                     w-[60%]
@@ -120,7 +129,7 @@ const EventForm = ({ pStyle, event, eventZones ,onSave}: Props) => {
                             </div>
                             <div className='flex w-full justify-end items-center gap-2'>
                                 <label className='text-sm font-semibold leading-6 text-gray-900 '>Limit</label>
-                                <input type="number" onChange={(e) => { setZoneState({ ...zoneState, limit: parseInt(e.target.value) }) }} className={clsx(`
+                                <input type="number" onChange={(e) => { setZoneState({ ...zoneState, limit: parseInt(e.target.value) }) }}  value={zoneState.limit} className={clsx(`
                         form-input 
                     block  
                     w-[60%]

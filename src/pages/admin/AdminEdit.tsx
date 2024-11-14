@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import AdminCard from '../../components/AdminCard'
 import { useNavigate } from 'react-router-dom'
 import * as apiClient from "../../api-client";
@@ -17,6 +17,8 @@ const AdminEdit = (props: Props) => {
 
         }
     );
+
+    console.log("admins from backend",adminData);
 
     if (!adminData) {
         return <Layout>
@@ -46,7 +48,7 @@ const AdminEdit = (props: Props) => {
                 </section>
 
                 <section className='w-full h-[90%]  overflow-y-scroll  flex flex-col gap-2 sm:pt-0 border-2 '>
-                    {adminData.data.map((admin: AdminInterface) => (<AdminCard name={admin.name!} onBtnClick={handleCardClick} email={admin.email} id='id1'
+                    {adminData.data.map((admin: AdminInterface &{id:string}) => (<AdminCard name={admin.name!} onBtnClick={handleCardClick} email={admin.email} id={admin.id}
                         pStyle='px-10'
                     />))}
                 </section>
